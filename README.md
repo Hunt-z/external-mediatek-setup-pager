@@ -1,1 +1,1 @@
-# Afla-Manager
+# Mediatek Setup
