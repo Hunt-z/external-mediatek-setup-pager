@@ -1,4 +1,3 @@
-#!/bin/bash
 # Title: External MediaTek Chip Loader/Remover
 # Author: Huntz
 # Version: 1.0
@@ -119,5 +118,19 @@ uci commit pineapd
 # ==========================================
 log_g "Restarting PineAP Service..."
 service pineapd restart
+
+# ==========================================
+# 5. VERIFICATION (Channel Hopping Check)
+# ==========================================
+log_y "Verifying Channel Hopping (3 Samples)..."
+sleep 10 # Let daemon start hopping
+
+for i in 1 2 3; do
+   # Grab the raw channel/freq info
+   INFO=$(iw dev ${EXT_IFACE} info 2>/dev/null | grep channel | awk '{print $2}')
+   [ -z "$INFO" ] && INFO="Unknown"
+   log_g "Sample $i: Channel $INFO"
+   sleep 1
+done
 
 log_g "DONE."
